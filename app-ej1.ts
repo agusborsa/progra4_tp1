@@ -1,6 +1,82 @@
+interface Tarea {
+    estado: "Pendiente" | "En progreso" | "Completada",
+    prioridad: "Alta" | "Media" | "Baja";
+    fecha: Date,
+    descripcion?: string
+}
 
+const tareas: Tarea[] = [
+    {
+        estado: "En progreso",
+        prioridad: "Alta",
+        fecha: new Date("2024-03-24"),
+        descripcion: "Completar proyecto"
+    },
+    {
+        estado: "Pendiente",
+        prioridad: "Media",
+        fecha: new Date("2024-03-25"),
+        descripcion: "Revisar documentación"
+    },
+    {
+        estado: "Completada",
+        prioridad: "Baja",
+        fecha: new Date("2024-03-26"),
+        descripcion: "Actualizar base de datos"
+    },
+    {
+        estado: "Pendiente",
+        prioridad: "Media",
+        fecha: new Date("2024-03-25"),
+        descripcion: "Revisar documentación 2"
+    },
+    {
+        estado: "Pendiente",
+        prioridad: "Media",
+        fecha: new Date("2024-03-25"),
+        descripcion: "Revisar documentación 3"
+    },
+    {
+        estado: "Pendiente",
+        prioridad: "Alta",
+        fecha: new Date("2024-03-25"),
+        descripcion: "Revisar excel"
+    },
+    {
+        estado: "Pendiente",
+        prioridad: "Baja",
+        fecha: new Date("2024-03-26"),
+        descripcion: "Actualizar base de datos 2"
+    }
+];
 
+// Función de comparación personalizada
+const compararPorPrioridad = (a: Tarea, b: Tarea): number => {
+    const prioridadOrden = {
+        "Alta": 1,
+        "Media": 2,
+        "Baja": 3
+    };
 
+    return prioridadOrden[a.prioridad] - prioridadOrden[b.prioridad];
+};
+
+// Ordenar el array tareas utilizando la función de comparación
+const tareasOrdenadas = tareas.sort(compararPorPrioridad);
+
+function mostrarTareas(tareas: Tarea[]) {
+    for (let i = 0; i < tareas.length; i++) {
+        if (tareas[i].estado != "Completada"){
+        console.log(`Tarea ${i + 1}:`);
+        console.log(`Estado: ${tareas[i].estado}`);
+        console.log(`Prioridad: ${tareas[i].prioridad}`);
+        console.log(`Tareas: ${tareas[i].descripcion}`);
+        console.log("--------------------");
+        }
+    }
+}
+
+mostrarTareas(tareas);
 /* type Usuarios =
     { tipo : "usuarios", usuarios: Usuario[] }
 
