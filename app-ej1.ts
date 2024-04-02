@@ -1,3 +1,7 @@
+type delayTarea <T> = 
+    | {tipo: "exito", encontrado: T}
+    | {tipo: "exito"}
+
 interface Tarea {
     estado: "Pendiente" | "En progreso" | "Completada",
     prioridad: "Alta" | "Media" | "Baja";
@@ -76,7 +80,14 @@ function mostrarTareas(tareas: Tarea[]) {
     }
 }
 
-mostrarTareas(tareas);
+async function delay(): Promise<delayTarea<Tarea>>  {
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    mostrarTareas(tareas)
+    return {tipo: "exito"};
+}
+
+delay();
+
 /* type Usuarios =
     { tipo : "usuarios", usuarios: Usuario[] }
 
