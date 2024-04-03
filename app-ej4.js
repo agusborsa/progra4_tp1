@@ -1,26 +1,5 @@
-type Usuario = 
-    | { tipo: "persona", persona: Persona }
-    | { tipo: "nombre", nombre: string}
-    | { tipo: "anonimo"}
-
-interface Persona {
-    nombre: string,
-    apellido?: string,
-    tareas: Tarea[]
-}
-
-type delayTarea <T> = 
-    | {tipo: "exito", encontrado: T}
-    | {tipo: "exito"}
-
-interface Tarea {
-    estado: "Pendiente" | "En progreso" | "Completada",
-    prioridad: "Alta" | "Media" | "Baja";
-    fecha: Date,
-    descripcion?: string
-}
-
-const tareas: Tarea[] = [
+"use strict";
+/* const tareas: Tarea[] = [
     {
         estado: "En progreso",
         prioridad: "Alta",
@@ -97,9 +76,8 @@ async function delay(): Promise<delayTarea<Tarea>>  {
     return {tipo: "exito"};
 }
 
-delay();
-
-const usuarios: Usuario[] = [
+delay(); */
+const usuarios = [
     {
         tipo: "persona",
         persona: {
@@ -140,26 +118,68 @@ const usuarios: Usuario[] = [
         }
     },
     {
-        tipo: "nombre",
-        nombre: "María"
-    },
-    {
-        tipo: "anonimo"
+        tipo: "persona",
+        persona: {
+            nombre: "Roberta",
+            apellido: "Guzmán",
+            tareas: [
+                {
+                    estado: "Pendiente",
+                    prioridad: "Alta",
+                    fecha: new Date(),
+                    descripcion: "Completar proyecto"
+                },
+                {
+                    estado: "En progreso",
+                    prioridad: "Media",
+                    fecha: new Date(),
+                    descripcion: "Revisar documentación 5"
+                },
+                {
+                    estado: "Pendiente",
+                    prioridad: "Media",
+                    fecha: new Date(),
+                    descripcion: "Revisar documentación 6"
+                },
+                {
+                    estado: "En progreso",
+                    prioridad: "Alta",
+                    fecha: new Date(),
+                    descripcion: "Revisar documentación 7"
+                },
+                {
+                    estado: "Completada",
+                    prioridad: "Alta",
+                    fecha: new Date(),
+                    descripcion: "Revisar documentación 8"
+                }
+            ]
+        }
     }
 ];
-
-function encontrarTareasAsignadas(nombrePersona: string): Tarea[] {
-    const tareasEncontradas: Tarea[] = [];
-
+function validarNombre(nombre) {
+    // Que ponga el nombre o el nombre y apellido
+    const regex = /^[a-zA-Z]+(?: [a-zA-Z]+)?$/;
+    // Aca compruebo si coincide con la expresion regular
+    return regex.test(nombre);
+}
+function encontrarTareasAsignadas(nombrePersona, apellidoPersona) {
+    const tareasEncontradas = [];
     usuarios.map(usuario => {
-        if (usuario.tipo === "persona" && usuario.persona.nombre === nombrePersona) {
+        if ((usuario.tipo === "persona" && usuario.persona.nombre === nombrePersona && validarNombre(usuario.persona.nombre)) || (usuario.tipo === "persona" && usuario.persona.nombre === nombrePersona && usuario.persona.apellido === apellidoPersona && validarNombre(usuario.persona.nombre))) {
             tareasEncontradas.push(...usuario.persona.tareas);
         }
+        else {
+            console.log("Por favor, escriba un nombre válido");
+            // según lo que encontré, este mensaje salta varias veces si en el array base hay más entradas con menos propiedades, aunque el nombre sea válido a causa del map. La solución sería utilizar foreach en su lugar, o find, pero por cuestiones de optimización decidí dejar el map, ya que el ejercicio exige una mayor eficiencia. Un dato adicional es que el ? para definir que un valor o parámetro sea opcional, me fuerza la opción de que dicho valor o parámetro sea undefined, lo que puede influir en el bug.
+        }
     });
-
+    if (tareasEncontradas.length === 0) {
+        console.log("No se encontraron tareas para el usuario especificado");
+    }
     return tareasEncontradas;
 }
-
-// Ejemplo de uso
-const tareasJuan = encontrarTareasAsignadas("Juan");
-console.log("Tareas de Juan:", tareasJuan);
+const tareasNombreApellido = encontrarTareasAsignadas("Roberta", "Guzmán");
+console.log("Tareas de Roberta Guzmán:", tareasNombreApellido);
+const tareasNombre = encontrarTareasAsignadas("Juan");
+console.log("Tareas de Juan", tareasNombre);
