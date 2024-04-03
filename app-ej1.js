@@ -1,15 +1,14 @@
-export type delayTarea <T> = 
-    | {tipo: "exito", encontrado: T}
-    | {tipo: "exito"}
-
-interface Tarea {
-    estado: "Pendiente" | "En progreso" | "Completada",
-    prioridad: "Alta" | "Media" | "Baja";
-    fecha: Date,
-    descripcion?: string
-}
-
-const tareas: Tarea[] = [
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+const tareas = [
     {
         estado: "En progreso",
         prioridad: "Alta",
@@ -53,41 +52,36 @@ const tareas: Tarea[] = [
         descripcion: "Actualizar base de datos 2"
     }
 ];
-
 // Función de comparación personalizada
-const compararPorPrioridad = (a: Tarea, b: Tarea): number => {
+const compararPorPrioridad = (a, b) => {
     const prioridadOrden = {
         "Alta": 1,
         "Media": 2,
         "Baja": 3
     };
-
     return prioridadOrden[a.prioridad] - prioridadOrden[b.prioridad];
 };
-
 // Ordenar el array tareas utilizando la función de comparación
 const tareasOrdenadas = tareas.sort(compararPorPrioridad);
-
-function mostrarTareas(tareas: Tarea[]) {
+function mostrarTareas(tareas) {
     for (let i = 0; i < tareas.length; i++) {
-        if (tareas[i].estado != "Completada"){
-        console.log(`Tarea ${i + 1}:`);
-        console.log(`Estado: ${tareas[i].estado}`);
-        console.log(`Prioridad: ${tareas[i].prioridad}`);
-        console.log(`Tareas: ${tareas[i].descripcion}`);
-        console.log("--------------------");
+        if (tareas[i].estado != "Completada") {
+            console.log(`Tarea ${i + 1}:`);
+            console.log(`Estado: ${tareas[i].estado}`);
+            console.log(`Prioridad: ${tareas[i].prioridad}`);
+            console.log(`Tareas: ${tareas[i].descripcion}`);
+            console.log("--------------------");
         }
     }
 }
-
-async function delay(): Promise<delayTarea<Tarea>>  {
-    await new Promise(resolve => setTimeout(resolve, 3000));
-    mostrarTareas(tareas)
-    return {tipo: "exito"};
+function delay() {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield new Promise(resolve => setTimeout(resolve, 3000));
+        mostrarTareas(tareas);
+        return { tipo: "exito" };
+    });
 }
-
 delay();
-
 /* type Usuarios =
     { tipo : "usuarios", usuarios: Usuario[] }
 
@@ -183,4 +177,3 @@ const mostrarTareas = (mensaje: string, usuarios: Usuario[]): any => {
 
 mostrarTareas("Estas son las tareas de los usuarios", usuarios);
  */
-

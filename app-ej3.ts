@@ -1,4 +1,15 @@
-export type delayTarea <T> = 
+type Usuario = 
+    | { tipo: "persona", persona: Persona }
+    | { tipo: "nombre", nombre: string}
+    | { tipo: "anonimo"}
+
+interface Persona {
+    nombre: string,
+    apellido?: string,
+    tareas: Tarea[]
+}
+
+type delayTarea <T> = 
     | {tipo: "exito", encontrado: T}
     | {tipo: "exito"}
 
@@ -54,7 +65,7 @@ const tareas: Tarea[] = [
     }
 ];
 
-// Función de comparación personalizada
+// Comparación
 const compararPorPrioridad = (a: Tarea, b: Tarea): number => {
     const prioridadOrden = {
         "Alta": 1,
@@ -88,99 +99,68 @@ async function delay(): Promise<delayTarea<Tarea>>  {
 
 delay();
 
-/* type Usuarios =
-    { tipo : "usuarios", usuarios: Usuario[] }
-
-type Usuario =
-    { tipo: "usuario", persona: Persona, tareas: Tarea[] };
-
-interface Persona {
-    nombre: string,
-    apellido?: string
-}
-
-interface Tarea {
-    estado: string,
-    prioridad: string,
-    fecha: Date,
-    descripcion?: string
-}
-
-const tareasDeRoberto: Tarea[] = [
-    {
-        estado: "En progreso",
-        prioridad: "Alta",
-        fecha: new Date("2024-03-24"),
-        descripcion: "Completar proyecto"
-    },
-    {
-        estado: "Pendiente",
-        prioridad: "Media",
-        fecha: new Date("2024-03-25"),
-        descripcion: "Revisar documentación"
-    },
-    {
-        estado: "Completada",
-        prioridad: "Baja",
-        fecha: new Date("2024-03-26"),
-        descripcion: "Actualizar base de datos"
-    }
-];
-
-const tareasDeAgustin: Tarea[] = [
-    {
-        estado: "En progreso",
-        prioridad: "Alta",
-        fecha: new Date("2024-03-24"),
-        descripcion: "proyecto.jpg"
-    },
-    {
-        estado: "Pendiente",
-        prioridad: "Media",
-        fecha: new Date("2024-03-25"),
-        descripcion: "documentacion.png"
-    },
-    {
-        estado: "Completada",
-        prioridad: "Baja",
-        fecha: new Date("2024-03-26"),
-        descripcion: "river.png"
-    }
-];
-
 const usuarios: Usuario[] = [
     {
-        tipo: "usuario",
+        tipo: "persona",
         persona: {
-            nombre: "Roberto",
-            apellido: "Pérez"
-        },
-        tareas: tareasDeRoberto
+            nombre: "Juan",
+            apellido: "Pérez",
+            tareas: [
+                {
+                    estado: "Pendiente",
+                    prioridad: "Alta",
+                    fecha: new Date(),
+                    descripcion: "Completar proyecto"
+                },
+                {
+                    estado: "En progreso",
+                    prioridad: "Media",
+                    fecha: new Date(),
+                    descripcion: "Revisar documentación 1"
+                },
+                {
+                    estado: "Pendiente",
+                    prioridad: "Media",
+                    fecha: new Date(),
+                    descripcion: "Revisar documentación 2"
+                },
+                {
+                    estado: "En progreso",
+                    prioridad: "Alta",
+                    fecha: new Date(),
+                    descripcion: "Revisar documentación 3"
+                },
+                {
+                    estado: "Completada",
+                    prioridad: "Alta",
+                    fecha: new Date(),
+                    descripcion: "Revisar documentación 4"
+                }
+            ]
+        }
     },
     {
-        tipo: "usuario",
-        persona: {
-            nombre: "Agustin",
-            apellido: "Borsa"
-            },
-        tareas: tareasDeAgustin
+        tipo: "nombre",
+        nombre: "María"
+    },
+    {
+        tipo: "anonimo"
     }
-
 ];
 
 
+function encontrarTareasAsignadas(nombrePersona: string): Tarea[] {
+    const tareasEncontradas: Tarea[] = [];
 
-const mostrarTareas = (mensaje: string, usuarios: Usuario[]): any => {
-    for (let i = 0; i < usuarios.length; i++) {
-        console.log(mensaje);
-        console.log(`Usuario ${i + 1}:`);
-        console.log(`Nombre: ${usuarios[i].persona.nombre}`);
-        console.log(`Apellido: ${usuarios[i].persona.apellido}`);
-        console.log(`Tareas: ${usuarios[i].tareas}`);
-        console.log("--------------------");
-    }
-};
+    usuarios.map(usuario => {
+        if (usuario.tipo === "persona" && usuario.persona.nombre === nombrePersona) {
+            tareasEncontradas.push(...usuario.persona.tareas);
+        }
+    });
 
-mostrarTareas("Estas son las tareas de los usuarios", usuarios);
- */
+    return tareasEncontradas;
+}
 
+// Ejemplo de uso
+const tareasJuan = encontrarTareasAsignadas("Juan");
+console.log("Tareas de Juan:", tareasJuan);
