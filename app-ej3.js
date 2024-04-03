@@ -52,7 +52,7 @@ const tareas = [
         descripcion: "Actualizar base de datos 2"
     }
 ];
-// Función de comparación personalizada
+// Comparación
 const compararPorPrioridad = (a, b) => {
     const prioridadOrden = {
         "Alta": 1,
@@ -82,3 +82,63 @@ function delay() {
     });
 }
 delay();
+const usuarios = [
+    {
+        tipo: "persona",
+        persona: {
+            nombre: "Juan",
+            apellido: "Pérez",
+            tareas: [
+                {
+                    estado: "Pendiente",
+                    prioridad: "Alta",
+                    fecha: new Date(),
+                    descripcion: "Completar proyecto"
+                },
+                {
+                    estado: "En progreso",
+                    prioridad: "Media",
+                    fecha: new Date(),
+                    descripcion: "Revisar documentación 1"
+                },
+                {
+                    estado: "Pendiente",
+                    prioridad: "Media",
+                    fecha: new Date(),
+                    descripcion: "Revisar documentación 2"
+                },
+                {
+                    estado: "En progreso",
+                    prioridad: "Alta",
+                    fecha: new Date(),
+                    descripcion: "Revisar documentación 3"
+                },
+                {
+                    estado: "Completada",
+                    prioridad: "Alta",
+                    fecha: new Date(),
+                    descripcion: "Revisar documentación 4"
+                }
+            ]
+        }
+    },
+    {
+        tipo: "nombre",
+        nombre: "María"
+    },
+    {
+        tipo: "anonimo"
+    }
+];
+function encontrarTareasAsignadas(nombrePersona) {
+    const tareasEncontradas = [];
+    usuarios.map(usuario => {
+        if (usuario.tipo === "persona" && usuario.persona.nombre === nombrePersona) {
+            tareasEncontradas.push(...usuario.persona.tareas);
+        }
+    });
+    return tareasEncontradas;
+}
+// Ejemplo de uso
+const tareasJuan = encontrarTareasAsignadas("Juan");
+console.log("Tareas de Juan:", tareasJuan);
