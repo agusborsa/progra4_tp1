@@ -1,4 +1,4 @@
-type Usuario = 
+export type Usuario = 
     | { tipo: "persona", persona: Persona }
     | { tipo: "nombre", nombre: string}
     | { tipo: "anonimo"}
