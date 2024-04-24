@@ -1,67 +1,107 @@
-export type Usuario = 
-    | { tipo: "persona", persona: Persona }
-    | { tipo: "nombre", nombre: string}
-    | { tipo: "anonimo"}
-
-interface Persona {
+export interface Persona {
     nombre: string,
     apellido?: string,
     tareas: Tarea[]
-}
-
-type delayTarea <T> = 
-    | {tipo: "exito", encontrado: T}
-    | {tipo: "exito"}
-
+};
 interface Tarea {
+    titulo: string,
     estado: "Pendiente" | "En progreso" | "Completada",
-    prioridad: "Alta" | "Media" | "Baja";
-    fecha: Date,
-    descripcion?: string
-}
+    prioridad: "Alta" | "Media" | "Baja"
+};
 
-const tareas: Tarea[] = [
+const usuariosData: Persona[] = [
     {
-        estado: "En progreso",
-        prioridad: "Alta",
-        fecha: new Date("2024-03-24"),
-        descripcion: "Completar proyecto"
+        nombre: "Juan",
+        apellido: "Pérez",
+        tareas: [
+            {
+                titulo: "Ordenar",
+                estado: "Pendiente",
+                prioridad: "Alta"
+            },
+            {
+                titulo: "Ordenar 1",
+                estado: "En progreso",
+                prioridad: "Media"
+            },
+            {
+                titulo: "Ordenar 2",
+                estado: "Pendiente",
+                prioridad: "Media"
+            },
+            {
+                titulo: "Ordenar 3",
+                estado: "En progreso",
+                prioridad: "Alta"
+            },
+            {
+                titulo: "Ordenar 4",
+                estado: "Completada",
+                prioridad: "Alta"
+            }
+        ]
     },
     {
-        estado: "Pendiente",
-        prioridad: "Media",
-        fecha: new Date("2024-03-25"),
-        descripcion: "Revisar documentación"
+        nombre: "María",
+        apellido: "Pérez",
+        tareas: [
+            {
+                titulo: "Ordenar",
+                estado: "Pendiente",
+                prioridad: "Alta"
+            },
+            {
+                titulo: "Ordenar 1",
+                estado: "En progreso",
+                prioridad: "Media"
+            },
+            {
+                titulo: "Ordenar 2",
+                estado: "Pendiente",
+                prioridad: "Media"
+            },
+            {
+                titulo: "Ordenar 3",
+                estado: "En progreso",
+                prioridad: "Alta"
+            },
+            {
+                titulo: "Ordenar 4",
+                estado: "Completada",
+                prioridad: "Alta"
+            }
+        ]
     },
     {
-        estado: "Completada",
-        prioridad: "Baja",
-        fecha: new Date("2024-03-26"),
-        descripcion: "Actualizar base de datos"
-    },
-    {
-        estado: "Pendiente",
-        prioridad: "Media",
-        fecha: new Date("2024-03-25"),
-        descripcion: "Revisar documentación 2"
-    },
-    {
-        estado: "Pendiente",
-        prioridad: "Media",
-        fecha: new Date("2024-03-25"),
-        descripcion: "Revisar documentación 3"
-    },
-    {
-        estado: "Pendiente",
-        prioridad: "Alta",
-        fecha: new Date("2024-03-25"),
-        descripcion: "Revisar excel"
-    },
-    {
-        estado: "Pendiente",
-        prioridad: "Baja",
-        fecha: new Date("2024-03-26"),
-        descripcion: "Actualizar base de datos 2"
+        nombre: "Roberta",
+        apellido: "Pérez",
+        tareas: [
+            {
+                titulo: "Ordenar",
+                estado: "Pendiente",
+                prioridad: "Alta"
+            },
+            {
+                titulo: "Ordenar 1",
+                estado: "En progreso",
+                prioridad: "Media"
+            },
+            {
+                titulo: "Ordenar 2",
+                estado: "Pendiente",
+                prioridad: "Media"
+            },
+            {
+                titulo: "Ordenar 3",
+                estado: "En progreso",
+                prioridad: "Alta"
+            },
+            {
+                titulo: "Ordenar 4",
+                estado: "Completada",
+                prioridad: "Alta"
+            }
+        ]
     }
 ];
 
@@ -77,89 +117,17 @@ const compararPorPrioridad = (a: Tarea, b: Tarea): number => {
 };
 
 // Ordenar el array tareas utilizando la función de comparación
-const tareasOrdenadas = tareas.sort(compararPorPrioridad);
+//const tareasOrdenadas = tareas.sort(compararPorPrioridad);
 
-function mostrarTareas(tareas: Tarea[]) {
-    for (let i = 0; i < tareas.length; i++) {
-        if (tareas[i].estado != "Completada"){
-        console.log(`Tarea ${i + 1}:`);
-        console.log(`Estado: ${tareas[i].estado}`);
-        console.log(`Prioridad: ${tareas[i].prioridad}`);
-        console.log(`Tareas: ${tareas[i].descripcion}`);
-        console.log("--------------------");
-        }
-    }
-}
+var mapaDePersonas = usuariosData.reduce((map, persona) => {
+    var tareasOrdenadas = persona.tareas.sort(compararPorPrioridad);
+    map.set(persona.nombre, tareasOrdenadas);
+    return map;
+}, new Map<string, Tarea[]>());
 
-async function delay(): Promise<delayTarea<Tarea>>  {
-    await new Promise(resolve => setTimeout(resolve, 3000));
-    mostrarTareas(tareas)
-    return {tipo: "exito"};
-}
 
-delay();
+console.log("Tareas de Juan: ", mapaDePersonas.get("Juan"));
+console.log("Tareas de María: ", mapaDePersonas.get("María"));
+console.log("Tareas de Roberta: ", mapaDePersonas.get("Roberta"));
 
-const usuarios: Usuario[] = [
-    {
-        tipo: "persona",
-        persona: {
-            nombre: "Juan",
-            apellido: "Pérez",
-            tareas: [
-                {
-                    estado: "Pendiente",
-                    prioridad: "Alta",
-                    fecha: new Date(),
-                    descripcion: "Completar proyecto"
-                },
-                {
-                    estado: "En progreso",
-                    prioridad: "Media",
-                    fecha: new Date(),
-                    descripcion: "Revisar documentación 1"
-                },
-                {
-                    estado: "Pendiente",
-                    prioridad: "Media",
-                    fecha: new Date(),
-                    descripcion: "Revisar documentación 2"
-                },
-                {
-                    estado: "En progreso",
-                    prioridad: "Alta",
-                    fecha: new Date(),
-                    descripcion: "Revisar documentación 3"
-                },
-                {
-                    estado: "Completada",
-                    prioridad: "Alta",
-                    fecha: new Date(),
-                    descripcion: "Revisar documentación 4"
-                }
-            ]
-        }
-    },
-    {
-        tipo: "nombre",
-        nombre: "María"
-    },
-    {
-        tipo: "anonimo"
-    }
-];
-
-function encontrarTareasAsignadas(nombrePersona: string): Tarea[] {
-    const tareasEncontradas: Tarea[] = [];
-
-    usuarios.map(usuario => {
-        if (usuario.tipo === "persona" && usuario.persona.nombre === nombrePersona) {
-            tareasEncontradas.push(...usuario.persona.tareas);
-        }
-    });
-
-    return tareasEncontradas;
-}
-
-// Ejemplo de uso
-const tareasJuan = encontrarTareasAsignadas("Juan");
-console.log("Tareas de Juan:", tareasJuan);
+//falta quitar del array las tareas que estan completas
